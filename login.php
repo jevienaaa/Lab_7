@@ -41,37 +41,133 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0f7fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            width: 100%;
+            padding: 15px 0;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+        main {
+            margin-top: 80px; /* Height of the header */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            width: 100%;
+            flex-direction: column;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td {
+            padding: 10px 0;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0 10px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #388E3C;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        .error {
+            color: red;
+            margin-bottom: 15px;
+        }
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <?php
-    if (!empty($error_message)) {
-        echo '<p style="color:black;">' . $error_message . '</p>';
-    }
-    ?>
-    <form method="POST" action="login.php">
 
-    <table>
-        <tr>
-            <td><label for="matric">Matric: </label>
-            <input type="text" name="matric" required></td>
-        </tr>
+<header>
+    <h1>Login Page</h1>
+</header>
 
-        <tr>
-            <td><label for="password">Password: <input type="password" name="password" required><br></label></td>
-        </tr>
-
-        <tr>
-            <td><input type="submit" value="Login"></td>
-        </tr>
-    
-    </table>
-    </form>
-
-    <br>
-    <a href="index.php">Register</a> here if you have not.
+<main>
+    <div class="container">
+        <?php
+        if (!empty($error_message)) {
+            echo '<p class="error">' . $error_message . '</p>';
+        }
+        ?>
+        <form method="POST" action="login.php">
+            <table>
+                <tr>
+                    <td><label for="matric">Matric:</label></td>
+                    <td><input type="text" id="matric" name="matric" required></td>
+                </tr>
+                <tr>
+                    <td><label for="password">Password:</label></td>
+                    <td><input type="password" id="password" name="password" required></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Login"></td>
+                </tr>
+            </table>
+        </form>
+        <p>Don't have an account? <a href="index.php">Register here</a>.</p>
+    </div>
+</main>
 
 </body>
 </html>
