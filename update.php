@@ -18,17 +18,18 @@ if ($conn->connect_error) {
 $message = ''; // Initialize an empty variable to store success or error message
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $matric = $_POST['matric'];
+    $original_matric = $_POST['original_matric'];
+    $new_matric = $_POST['new_matric'];
     $name = $_POST['name'];
     $role = $_POST['role'];
 
-    $sql = "UPDATE users SET name=?, role=? WHERE matric=?";
+    $sql = "UPDATE users SET matric=?, name=?, role=? WHERE matric=?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sss", $name, $role, $matric);
+    $stmt->bind_param("ssss", $new_matric, $name, $role, $original_matric);
     if ($stmt->execute()) {
         $message = "Record updated successfully. <a href='display.php'>Go back</a>";
     } else {
-        $message = "Error updating record: " . $conn->error;
+        $message = "Error updating record: " . $stmt->error;
     }
     $stmt->close();
 } else {
@@ -42,6 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user = $result->fetch_assoc();
     $stmt->close();
 }
+$conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -133,11 +135,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     <?php else : ?>
         <form method="POST" action="update.php">
-            <label for="matric">Matric:</label>
-            <input type="text" id="matric" name="matric" value="<?php echo $user['matric']; ?>" required><br><br>
+            <input type="hidden" id="original_matric" name="original_matric" value="<?php echo htmlspecialchars($user['matric']); ?>">
+
+            <label for="new_matric">Matric:</label>
+            <input type="text" id="new_matric" name="new_matric" value="<?php echo htmlspecialchars($user['matric']); ?>" required><br><br>
 
             <label for="name">Name:</label>
-            <input type="text" id="name" name="name" value="<?php echo $user['name']; ?>" required><br><br>
+            <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($user['name']); ?>" required><br><br>
 
             <label for="role">Access Level:</label>
             <select id="role" name="role" required>
@@ -152,7 +156,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 </body>
 </html>
-
-<?php
-$conn->close();
-?>
